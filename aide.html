@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VioSend — Aide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  .help-hero{ max-width:800px; margin:0 auto; padding:9vh 6vw 6vh; text-align:center; }
+  .help-hero h1{ font-size:clamp(2rem,4vw,2.8rem); }
+  .help-hero h1 .grad{
+    background:linear-gradient(90deg, var(--violet), var(--pink) 60%, var(--orange));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .help-hero p{ margin-top:16px; color:var(--text-muted); font-size:1.08rem; }
+
+  .help-brief{
+    max-width:900px; margin:0 auto 8vh; padding:0 6vw;
+  }
+  .brief-card{
+    background:#0d0d10; border:1px solid var(--line); border-radius:20px;
+    padding:32px 36px; font-size:1.05rem; line-height:1.8; color:#e8e6ee;
+  }
+
+  .help-detail{ max-width:900px; margin:0 auto; padding:0 6vw 12vh; }
+  .help-step{
+    display:grid; grid-template-columns:56px 1fr; gap:22px;
+    padding:30px 0; border-top:1px solid var(--line);
+  }
+  .help-step:last-child{ border-bottom:1px solid var(--line); }
+  .help-num{
+    width:44px; height:44px; border-radius:12px;
+    background:linear-gradient(135deg, var(--violet), var(--pink));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Sora',sans-serif; font-weight:700; font-size:1.05rem;
+  }
+  .help-step h3{ font-family:'Sora',sans-serif; font-size:1.2rem; margin-bottom:10px; }
+  .help-step p{ color:var(--text-muted); font-size:0.98rem; line-height:1.75; }
+  .help-step ul{ margin-top:10px; padding-left:20px; color:var(--text-muted); font-size:0.95rem; line-height:1.8; }
+
+  .help-faq-title{ text-align:center; font-size:1.4rem; margin:6vh 0 30px; font-family:'Sora',sans-serif; }
+  .faq-item{ background:#0d0d10; border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:12px; }
+  .faq-item h4{ font-size:0.98rem; margin-bottom:8px; }
+  .faq-item p{ color:var(--text-muted); font-size:0.92rem; line-height:1.7; }
+
+  @media(max-width:600px){
+    .help-hero{ padding:6vh 6vw 4vh; }
+    .brief-card{ padding:22px 20px; font-size:0.95rem; }
+    .help-step{ grid-template-columns: 44px 1fr; gap:14px; padding:22px 0; }
+    .help-num{ width:36px; height:36px; font-size:0.92rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="spline-bg">
+  <spline-viewer url="https://prod.spline.design/lBtAFIOp01PPBggx/scene.splinecode"></spline-viewer>
+</div>
+
+<header>
+    <div class="logo-container">
+        <img src="mon.png" alt="VioSend">
+    </div>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <div class="header-right" id="header-right">
+        <nav class="nav-center">
+            <button class="nav-btn" onclick="location.href='produits.html'">Produits</button>
+            <button class="nav-btn" onclick="location.href='communaute.html'">Communauté</button>
+            <button class="nav-btn" onclick="location.href='aide.html'">Aide</button>
+            <button class="nav-btn" onclick="location.href='dashboard.html'">Notre Dashboard</button>
+        </nav>
+        <a href="connexion.html" class="connexion-link">Connexion</a>
+        <a class="download-btn" href="VioSend-Presentation.pdf" download>Télécharger</a>
+    </div>
+</header>
+
+<section class="help-hero">
+  <h1>Comment fonctionne <span class="grad">VioSend</span> ?</h1>
+  <p>Une plateforme, trois usages : envoyer de l'argent, emprunter, et vendre.</p>
+</section>
+
+<section class="help-brief">
+  <div class="brief-card">
+    En résumé : vous créez un compte VioSend, vous le rechargez ou le reliez à votre carte, puis vous pouvez envoyer de l'argent à n'importe qui dans le monde, demander un prêt évalué par notre IA, ou ouvrir votre propre boutique pour vendre en ligne. Chaque opération est confirmée en quelques secondes depuis votre dashboard.
+  </div>
+</section>
+
+<section class="help-detail">
+  <div class="help-step">
+    <div class="help-num">1</div>
+    <div>
+      <h3>Créer son compte et s'abonner</h3>
+      <p>L'inscription se fait en quelques minutes : informations personnelles, puis choix d'une formule d'abonnement (1 mois, 1 an ou 5 ans) et d'un moyen de paiement pour activer l'accès à la plateforme.</p>
+    </div>
+  </div>
+  <div class="help-step">
+    <div class="help-num">2</div>
+    <div>
+      <h3>Envoyer de l'argent</h3>
+      <p>Depuis l'onglet Transferts du dashboard, indiquez le destinataire, son pays et le montant. VioSend achemine l'argent vers une carte bancaire ou une carte SIM (mobile money), où que se trouve la personne.</p>
+    </div>
+  </div>
+  <div class="help-step">
+    <div class="help-num">3</div>
+    <div>
+      <h3>Demander un prêt</h3>
+      <p>L'onglet Prêts propose un montant et une durée à ajuster librement. L'intelligence artificielle de VioSend calcule un taux adapté à partir de l'activité du compte, et donne une réponse en quelques minutes.</p>
+    </div>
+  </div>
+  <div class="help-step">
+    <div class="help-num">4</div>
+    <div>
+      <h3>Créer sa boutique</h3>
+      <p>Pour 10 000 FCFA, chacun peut ouvrir sa propre boutique pour vendre des produits digitaux ou physiques — utilisable en dehors de la plateforme, comme le fait Chariow.</p>
+      <ul>
+        <li>Un lien de boutique personnel est généré pour être partagé aux clients</li>
+        <li>Les clients peuvent acheter directement via ce lien, ou depuis la page du vendeur sur VioSend</li>
+        <li>Chaque vente est reversée immédiatement sur la carte VISA ou la carte VioSend du vendeur</li>
+      </ul>
+    </div>
+  </div>
+  <div class="help-step">
+    <div class="help-num">5</div>
+    <div>
+      <h3>Suivre ses comptes</h3>
+      <p>L'onglet Comptes centralise le solde, les dépenses récentes et l'historique de toutes les transactions, transferts comme ventes de boutique.</p>
+    </div>
+  </div>
+
+  <div class="help-faq-title">Questions fréquentes</div>
+  <div class="faq-item">
+    <h4>Le prix de l'abonnement dépend-il de mon pays ?</h4>
+    <p>Oui, le montant s'affiche dans la devise correspondant à votre pays au moment de l'inscription.</p>
+  </div>
+  <div class="faq-item">
+    <h4>Ma boutique doit-elle rester sur VioSend ?</h4>
+    <p>Non, le lien de votre boutique peut être partagé et utilisé en dehors de la plateforme, exactement comme avec Chariow.</p>
+  </div>
+  <div class="faq-item">
+    <h4>Où va l'argent de mes ventes ?</h4>
+    <p>Directement sur votre carte VISA ou votre carte VioSend, sans étape supplémentaire.</p>
+  </div>
+</section>
+
+<script type="module" src="https://cdn.spline.design/@splinetool/viewer@2.0.36/build/spline-viewer.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

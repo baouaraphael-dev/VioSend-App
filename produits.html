@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VioSend — Produits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Fraunces:ital,wght@0,300;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  :root{
+    --gold: #D9C08C;
+    --line-soft: rgba(255,255,255,0.09);
+  }
+  .serif{ font-family:'Fraunces', serif; font-weight:500; }
+  .serif-i{ font-family:'Fraunces', serif; font-style:italic; font-weight:400; }
+
+  .prod-hero{
+    padding:10vh 8vw 8vh;
+    max-width:1200px; margin:0 auto;
+  }
+  .prod-kicker{
+    display:flex; align-items:center; gap:14px;
+    color:var(--gold); font-size:0.82rem; letter-spacing:0.14em; text-transform:uppercase;
+    margin-bottom:34px;
+  }
+  .prod-kicker::before{ content:''; width:34px; height:1px; background:var(--gold); }
+  .prod-hero h1{
+    font-size:clamp(2.4rem, 5vw, 4rem);
+    line-height:1.12;
+    max-width:16ch;
+    font-weight:300;
+  }
+  .prod-hero h1 .accent{ font-style:italic; font-weight:400;
+    background:linear-gradient(90deg, var(--gold), #fff 60%, var(--gold));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .prod-hero p{
+    margin-top:28px; color:var(--text-muted); font-size:1.1rem; max-width:52ch; line-height:1.7;
+  }
+
+  .prod-section{
+    max-width:1200px; margin:0 auto;
+    padding:10vh 8vw;
+    border-top:1px solid var(--line-soft);
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:64px; align-items:center;
+  }
+  .prod-section.reverse{ grid-template-columns:1.1fr 0.9fr; }
+  .prod-section.reverse .prod-visual{ order:2; }
+  .prod-section.reverse .prod-copy{ order:1; }
+
+  .prod-index{
+    font-family:'Fraunces', serif; font-style:italic; font-size:1rem; color:var(--gold); margin-bottom:22px; display:block;
+  }
+  .prod-copy h2{
+    font-size:clamp(1.7rem, 3vw, 2.4rem); font-weight:300; line-height:1.2; margin-bottom:22px;
+  }
+  .prod-copy h2 em{ font-style:italic; font-weight:500; }
+  .prod-copy p{ color:var(--text-muted); font-size:1.02rem; line-height:1.75; max-width:44ch; }
+  .prod-tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+  .prod-tag{
+    font-size:0.78rem; color:#fff; border:1px solid var(--line-soft);
+    padding:8px 16px; border-radius:100px; letter-spacing:0.02em;
+  }
+
+  .prod-visual{
+    aspect-ratio:4/3; border-radius:4px; position:relative; overflow:hidden;
+    border:1px solid var(--line-soft);
+    background:linear-gradient(150deg, #0d0910, #050308);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .prod-visual .frame{
+    position:absolute; inset:22px; border:1px solid rgba(217,192,140,0.25); border-radius:2px;
+  }
+  .prod-visual .corner{ position:absolute; width:22px; height:22px; }
+  .prod-visual .corner.tl{ top:12px; left:12px; border-top:1px solid var(--gold); border-left:1px solid var(--gold); }
+  .prod-visual .corner.br{ bottom:12px; right:12px; border-bottom:1px solid var(--gold); border-right:1px solid var(--gold); }
+
+  .visual-mock{
+    position:relative; z-index:1; width:78%;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--line-soft); border-radius:10px;
+    padding:22px;
+    backdrop-filter: blur(6px);
+  }
+  .visual-mock .row{ display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--line-soft); font-size:0.82rem; color:var(--text-muted); }
+  .visual-mock .row:last-child{ border-bottom:none; }
+  .visual-mock .row b{ color:#fff; font-weight:500; }
+  .visual-mock .shop-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .visual-mock .shop-item{ background:rgba(255,255,255,0.03); border:1px solid var(--line-soft); border-radius:6px; padding:14px; text-align:center; }
+  .visual-mock .shop-item .price{ font-family:'Fraunces', serif; font-style:italic; color:var(--gold); margin-top:6px; }
+
+  .prod-ia{
+    max-width:1200px; margin:0 auto; padding:10vh 8vw;
+    border-top:1px solid var(--line-soft);
+    text-align:center;
+  }
+  .prod-ia .serif-i{ font-size:clamp(1.6rem,3.4vw,2.3rem); line-height:1.4; color:#fff; max-width:36ch; margin:0 auto; }
+  .prod-ia .serif-i em{ color:var(--gold); }
+  .prod-ia p{ color:var(--text-muted); margin-top:20px; max-width:40ch; margin-left:auto; margin-right:auto; }
+
+  .prod-closing{
+    max-width:1200px; margin:0 auto; padding:8vh 8vw 12vh;
+    border-top:1px solid var(--line-soft);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:26px;
+  }
+  .prod-closing h3{ font-size:clamp(1.5rem,2.6vw,2rem); font-weight:300; max-width:18ch; }
+  .prod-closing h3 em{ font-style:italic; font-weight:500; color:var(--gold); }
+  .prod-cta{
+    padding:15px 30px; border-radius:2px; border:1px solid var(--gold); color:var(--gold);
+    text-decoration:none; font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase;
+    transition:background .3s ease, color .3s ease;
+  }
+  .prod-cta:hover{ background:var(--gold); color:#050308; }
+
+  @media(max-width:860px){
+    .prod-section, .prod-section.reverse{ grid-template-columns:1fr; }
+    .prod-section.reverse .prod-visual, .prod-section.reverse .prod-copy{ order:initial; }
+  }
+</style>
+</head>
+<body>
+
+<div class="spline-bg">
+  <spline-viewer url="https://prod.spline.design/lBtAFIOp01PPBggx/scene.splinecode"></spline-viewer>
+</div>
+
+<header>
+    <div class="logo-container">
+        <img src="mon.png" alt="VioSend">
+    </div>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <div class="header-right" id="header-right">
+        <nav class="nav-center">
+            <button class="nav-btn" onclick="location.href='produits.html'">Produits</button>
+            <button class="nav-btn" onclick="location.href='communaute.html'">Communauté</button>
+            <button class="nav-btn" onclick="location.href='aide.html'">Aide</button>
+            <button class="nav-btn" onclick="location.href='dashboard.html'">Notre Dashboard</button>
+        </nav>
+        <a href="connexion.html" class="connexion-link">Connexion</a>
+        <a class="download-btn" href="VioSend-Presentation.pdf" download>Télécharger</a>
+    </div>
+</header>
+
+<section class="prod-hero">
+  <div class="prod-kicker">Nos produits</div>
+  <h1>Bien plus qu'un envoi d'argent — <span class="accent">tout un monde à bâtir</span></h1>
+  <p>VioSend rassemble en un seul lieu vos transferts, vos prêts et votre commerce. Une plateforme pensée avec la même exigence que les meilleures maisons, pour que chaque geste financier soit aussi simple qu'élégant.</p>
+</section>
+
+<section class="prod-section">
+  <div class="prod-copy">
+    <span class="prod-index">01 — Envoyer</span>
+    <h2>Un transfert, <em>partout</em>, en toute discrétion</h2>
+    <p>Vers une carte bancaire ou une simple carte SIM, l'argent trouve son chemin en quelques secondes, où que se trouve le destinataire dans le monde.</p>
+    <div class="prod-tags"><span class="prod-tag">190+ pays</span><span class="prod-tag">Carte & mobile money</span><span class="prod-tag">Instantané</span></div>
+  </div>
+  <div class="prod-visual">
+    <div class="frame"></div><div class="corner tl"></div><div class="corner br"></div>
+    <div class="visual-mock">
+      <div class="row"><span>Destinataire</span><b>Aïcha K.</b></div>
+      <div class="row"><span>Pays</span><b>Sénégal</b></div>
+      <div class="row"><span>Montant</span><b>50 000 F</b></div>
+      <div class="row"><span>Statut</span><b style="color:var(--gold)">Envoyé</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="prod-section reverse">
+  <div class="prod-copy">
+    <span class="prod-index">02 — Emprunter</span>
+    <h2>Des prêts <em>évalués</em> avec justesse</h2>
+    <p>Notre intelligence artificielle étudie l'activité réelle du compte pour proposer, en quelques minutes, un montant et un taux qui vous ressemblent.</p>
+    <div class="prod-tags"><span class="prod-tag">Score IA</span><span class="prod-tag">Décision rapide</span><span class="prod-tag">Taux personnalisé</span></div>
+  </div>
+  <div class="prod-visual">
+    <div class="frame"></div><div class="corner tl"></div><div class="corner br"></div>
+    <div class="visual-mock">
+      <div class="row"><span>Score</span><b style="color:var(--gold)">812</b></div>
+      <div class="row"><span>Montant proposé</span><b>400 000 F</b></div>
+      <div class="row"><span>Taux</span><b>7,9%</b></div>
+      <div class="row"><span>Délai</span><b>~2 min</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="prod-section">
+  <div class="prod-copy">
+    <span class="prod-index">03 — Vendre</span>
+    <h2>Votre <em>boutique</em>, sans limites</h2>
+    <p>VioSend ne sert pas seulement à transférer de l'argent : la plateforme permet aussi de vendre des produits digitaux ou de créer sa boutique, pour seulement <strong style="color:#fff; font-weight:600;">10 000 FCFA</strong> — une boutique utilisable en dehors de la plateforme, tout comme le fait Chariow.</p>
+    <p style="margin-top:16px;">Une fois créée, votre boutique dispose de son propre lien à partager : vos clients peuvent y accéder directement, ou depuis votre page sur VioSend. Chaque vente est reversée immédiatement sur votre carte VISA ou votre carte VioSend.</p>
+    <div class="prod-tags"><span class="prod-tag">Boutique dès 10 000 FCFA</span><span class="prod-tag">Lien de boutique dédié</span><span class="prod-tag">Paiement direct sur carte</span></div>
+  </div>
+  <div class="prod-visual">
+    <div class="frame"></div><div class="corner tl"></div><div class="corner br"></div>
+    <div class="visual-mock">
+      <div class="row"><span>Lien de boutique</span><b style="color:var(--gold)">viosend.shop/aicha</b></div>
+      <div class="shop-grid" style="margin-top:12px;">
+        <div class="shop-item">E-book<div class="price">5 000 F</div></div>
+        <div class="shop-item">Formation<div class="price">15 000 F</div></div>
+      </div>
+      <div class="row" style="margin-top:12px;"><span>Vente reversée sur</span><b>Carte VioSend</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="prod-ia">
+  <div class="serif-i">« Une IA discrète, qui surveille <em>chaque transfert</em>, choisit le meilleur taux et protège chaque boutique. »</div>
+  <p>L'intelligence artificielle de VioSend travaille en silence, pour que vous n'ayez jamais à y penser.</p>
+</section>
+
+<section class="prod-closing">
+  <h3>Prêt à découvrir VioSend <em>en action</em> ?</h3>
+  <div style="display:flex; gap:16px; flex-wrap:wrap;">
+    <a href="boutique-creer.html" class="prod-cta">Créer ma boutique</a>
+    <a href="dashboard.html" class="prod-cta">Voir le dashboard</a>
+  </div>
+</section>
+
+<script type="module" src="https://cdn.spline.design/@splinetool/viewer@2.0.36/build/spline-viewer.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

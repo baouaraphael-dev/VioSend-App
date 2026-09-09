@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VioSend — Créer un compte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  :root{ --surface:#16101F; --surface-2:#1C1428; }
+  .signup-wrap{
+    padding:6vh 4vw 12vh;
+  }
+  .signup-head{ text-align:center; max-width:560px; margin:0 auto 40px; }
+  .signup-head h1{ font-family:'Sora',sans-serif; font-size:clamp(1.7rem,3vw,2.2rem); }
+  .signup-head p{ color:var(--text-muted); margin-top:12px; }
+
+  .split-wrap{ display:grid; grid-template-columns:0.85fr 1.5fr; }
+  .brand-panel{
+    position:relative; overflow:hidden; padding:8vh 4vw;
+    display:flex; flex-direction:column; justify-content:center;
+    background:linear-gradient(160deg, #1c1428, #0a0712 65%);
+    border-right:1px solid var(--line);
+  }
+  .brand-panel::before{
+    content:''; position:absolute; width:420px; height:420px; border-radius:50%;
+    background:conic-gradient(from 90deg, var(--violet), var(--pink), var(--orange), var(--violet));
+    filter:blur(110px); opacity:0.35; top:-140px; left:-100px;
+  }
+  .brand-panel h2{
+    position:relative; z-index:1; font-family:'Sora',sans-serif; font-weight:300; font-size:clamp(1.6rem,3vw,2.2rem); line-height:1.15; max-width:14ch;
+  }
+  .brand-panel h2 em{ font-style:italic; font-weight:600;
+    background:linear-gradient(90deg, var(--violet), var(--pink) 60%, var(--orange));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .brand-pills{ position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:10px; margin-top:32px; }
+  .brand-pill{
+    display:flex; align-items:center; gap:8px; background:#fff; color:#111;
+    padding:8px 14px; border-radius:100px; font-size:0.8rem; font-weight:600;
+  }
+
+  @media(max-width:1000px){ .split-wrap{ grid-template-columns:1fr; } .brand-panel{ display:none; } }
+
+  .signup-grid{ display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:start; }
+
+  .panel{
+    background:#0d0d10; border:1px solid var(--line); border-radius:20px; padding:30px 32px;
+  }
+  .panel h2{ font-family:'Sora',sans-serif; font-size:1.1rem; margin-bottom:22px; }
+  .field{ margin-bottom:16px; }
+  .field label{ display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:7px; }
+  .field input, .field select{
+    width:100%; padding:12px 14px; border-radius:10px;
+    background:var(--surface); border:1px solid rgba(255,255,255,0.14); color:#fff; font-size:0.92rem; font-family:inherit;
+  }
+  .field input:focus, .field select:focus{ outline:2px solid var(--violet); outline-offset:1px; }
+  .row-2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+  .plans{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+  .plan{
+    border:1px solid rgba(255,255,255,0.14); border-radius:14px; padding:16px 12px; text-align:center;
+    cursor:pointer; transition:border-color .2s ease, background .2s ease; background:var(--surface);
+  }
+  .plan:hover{ border-color:rgba(255,255,255,0.3); }
+  .plan.active{ border-color:var(--violet); background:linear-gradient(150deg, rgba(139,92,246,0.18), rgba(236,72,153,0.08)); }
+  .plan .dur{ font-size:0.82rem; color:var(--text-muted); }
+  .plan .price{ font-family:'Sora',sans-serif; font-weight:700; font-size:1.25rem; margin-top:6px; }
+
+  .card-preview{
+    aspect-ratio:1.586/1; border-radius:18px; position:relative; overflow:hidden;
+    background:linear-gradient(150deg, #1C1428, #0f0b1a);
+    border:1px solid rgba(255,255,255,0.14);
+    padding:24px; margin-bottom:24px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .card-preview::before{
+    content:''; position:absolute; width:280px; height:280px; border-radius:50%;
+    background:conic-gradient(from 90deg, var(--violet), var(--pink), var(--orange), var(--violet));
+    filter:blur(70px); opacity:0.35; top:-100px; right:-80px;
+  }
+  .card-top-row{ display:flex; justify-content:space-between; align-items:flex-start; position:relative; z-index:1; }
+  .card-logo{ display:flex; align-items:center; gap:8px; font-family:'Sora',sans-serif; font-weight:800; font-size:1.05rem; }
+  .card-logo img{ height:22px; width:auto; }
+  .card-chip{ width:40px; height:30px; border-radius:6px; background:linear-gradient(135deg, var(--orange), var(--pink)); }
+  .card-number{ font-family:'Sora',sans-serif; font-size:1.25rem; letter-spacing:0.12em; position:relative; z-index:1; }
+  .card-bottom-row{ display:flex; justify-content:space-between; font-size:0.78rem; color:var(--text-muted); position:relative; z-index:1; }
+  .card-bottom-row .name{ text-transform:uppercase; color:#fff; font-size:0.85rem; }
+
+  .total-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 18px; background:var(--surface); border:1px solid var(--line); border-radius:12px; margin-bottom:20px;
+  }
+  .total-row .lbl{ color:var(--text-muted); font-size:0.85rem; }
+  .total-row .val{ font-family:'Sora',sans-serif; font-weight:700; font-size:1.2rem; }
+  .pay-method-toggle{ display:flex; gap:8px; }
+  .pay-method-btn{
+    flex:1; padding:10px 8px; border-radius:10px; border:1px solid rgba(255,255,255,0.14);
+    background:var(--surface); color:var(--text-muted); font-size:0.82rem; font-family:inherit; cursor:pointer;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .pay-method-btn.active{ border-color:var(--violet); color:#fff; background:linear-gradient(150deg, rgba(139,92,246,0.18), rgba(236,72,153,0.08)); }
+
+  .submit-btn{
+    width:100%; padding:15px; border-radius:12px; border:none; cursor:pointer; font-family:inherit;
+    background:linear-gradient(90deg, var(--violet), var(--pink)); color:white; font-weight:600; font-size:0.98rem;
+  }
+  .submit-btn:hover{ filter:brightness(1.08); }
+
+  .login-hint{ text-align:center; margin-top:26px; color:var(--text-muted); font-size:0.92rem; }
+  .login-hint a{ color:#fff; font-weight:600; text-decoration:underline; }
+
+  .confirm-overlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .confirm-overlay.show{ display:flex; }
+  .confirm-box{
+    background:#0d0d10; border:1px solid var(--line); border-radius:20px; padding:40px; text-align:center; max-width:380px;
+  }
+  .confirm-box .tick{ width:56px; height:56px; border-radius:50%; margin:0 auto 18px; background:rgba(52,211,153,0.15); display:flex; align-items:center; justify-content:center; font-size:1.6rem; color:#34D399; }
+  .confirm-box h3{ font-family:'Sora',sans-serif; font-size:1.25rem; }
+  .confirm-box p{ color:var(--text-muted); margin-top:10px; font-size:0.95rem; }
+  .confirm-box button{ margin-top:22px; padding:12px 26px; border-radius:100px; border:none; cursor:pointer; font-family:inherit; background:linear-gradient(90deg, var(--violet), var(--pink)); color:white; font-weight:600; }
+
+  @media(max-width:900px){ .signup-grid{ grid-template-columns:1fr; } .plans{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<div class="spline-bg">
+  <spline-viewer url="https://prod.spline.design/lBtAFIOp01PPBggx/scene.splinecode"></spline-viewer>
+</div>
+
+<header>
+    <div class="logo-container">
+        <img src="mon.png" alt="VioSend">
+    </div>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <div class="header-right" id="header-right">
+        <nav class="nav-center">
+            <button class="nav-btn" onclick="location.href='produits.html'">Produits</button>
+            <button class="nav-btn" onclick="location.href='communaute.html'">Communauté</button>
+            <button class="nav-btn" onclick="location.href='aide.html'">Aide</button>
+            <button class="nav-btn" onclick="location.href='dashboard.html'">Notre Dashboard</button>
+        </nav>
+        <a href="connexion.html" class="connexion-link">Connexion</a>
+        <a class="download-btn" href="VioSend-Presentation.pdf" download>Télécharger</a>
+    </div>
+</header>
+
+<div class="split-wrap">
+  <div class="brand-panel">
+    <h2>Rejoignez ceux qui <em>envoient, empruntent</em> et vendent</h2>
+    <div class="brand-pills">
+      <span class="brand-pill">📁 Fichiers</span>
+      <span class="brand-pill">🎓 Formations</span>
+      <span class="brand-pill">🔑 Licences</span>
+      <span class="brand-pill">📦 Bundles</span>
+      <span class="brand-pill">🎯 Coaching</span>
+      <span class="brand-pill">🛠️ Services</span>
+    </div>
+  </div>
+
+  <div class="signup-wrap">
+  <div class="signup-head">
+    <h1>Créer votre compte VioSend</h1>
+    <p>Choisissez votre formule et activez votre accès en quelques minutes.</p>
+  </div>
+
+  <form class="signup-grid" id="signup-form">
+    <div class="panel">
+      <h2>Vos informations</h2>
+      <div class="row-2">
+        <div class="field"><label>Prénom</label><input type="text" id="reg-first-name" required placeholder="Prénom"></div>
+        <div class="field"><label>Nom</label><input type="text" id="reg-last-name" required placeholder="Nom"></div>
+      </div>
+      <div class="field"><label>Adresse e-mail</label><input type="email" id="reg-email" required placeholder="vous@exemple.com"></div>
+      <div class="field"><label>Mot de passe</label><input type="password" id="reg-password" required placeholder="••••••••" minlength="8"></div>
+      <div class="field">
+        <label>Devise / région</label>
+        <select id="currency-select">
+          <option value="USD" selected>Dollar US ($)</option>
+          <option value="EUR">Euro (€)</option>
+        </select>
+      </div>
+
+      <h2 style="margin-top:10px;">Votre formule</h2>
+      <div class="plans" id="plans">
+        <div class="plan" data-months="1">
+          <div class="dur">1 mois</div>
+          <div class="price" data-usd="25" data-eur="20">$25</div>
+        </div>
+        <div class="plan active" data-months="12">
+          <div class="dur">1 an</div>
+          <div class="price" data-usd="35" data-eur="30">$35</div>
+        </div>
+        <div class="plan" data-months="60">
+          <div class="dur">5 ans</div>
+          <div class="price" data-usd="45" data-eur="60">$45</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Paiement</h2>
+
+      <div class="field">
+        <label>Moyen de paiement</label>
+        <div class="pay-method-toggle">
+          <button type="button" class="pay-method-btn active" data-method="carte">💳 Carte bancaire</button>
+          <button type="button" class="pay-method-btn" data-method="sim">📱 Carte SIM / Mobile Money</button>
+        </div>
+      </div>
+
+      <div id="pay-fields-carte">
+        <div class="card-preview">
+          <div class="card-top-row">
+            <div class="card-logo"><img src="logo.png" alt=""> VioSend</div>
+            <div class="card-chip"></div>
+          </div>
+          <div class="card-number" id="pv-number">•••• •••• •••• ••••</div>
+          <div class="card-bottom-row">
+            <div><div style="font-size:0.68rem;">Titulaire</div><div class="name" id="pv-name">Votre nom</div></div>
+            <div><div style="font-size:0.68rem;">Expire</div><div class="name" id="pv-exp">MM/AA</div></div>
+          </div>
+        </div>
+
+        <div class="field"><label>Nom sur la carte</label><input type="text" id="card-name" placeholder="Nom complet"></div>
+        <div class="field"><label>Numéro de carte</label><input type="text" id="card-number" placeholder="1234 5678 9012 3456" inputmode="numeric" maxlength="19"></div>
+        <div class="row-2">
+          <div class="field"><label>Expiration</label><input type="text" id="card-exp" placeholder="MM/AA" maxlength="5"></div>
+          <div class="field"><label>CVV</label><input type="text" id="card-cvv" placeholder="123" maxlength="3" inputmode="numeric"></div>
+        </div>
+      </div>
+
+      <div id="pay-fields-sim" style="display:none;">
+        <div class="field">
+          <label>Opérateur</label>
+          <select id="sim-operator">
+            <option>MTN Mobile Money</option>
+            <option>Moov Money</option>
+            <option>Orange Money</option>
+            <option>Wave</option>
+          </select>
+        </div>
+        <div class="field"><label>Numéro de téléphone (carte SIM)</label><input type="text" id="sim-phone" placeholder="+229 00 00 00 00"></div>
+      </div>
+
+      <div class="total-row">
+        <span class="lbl">Total à payer</span>
+        <span class="val" id="total-val">$35 / an</span>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">Créer mon compte et payer</button>
+      <div id="signup-error" style="display:none; color:#F87171; font-size:0.85rem; margin-top:12px; text-align:center;"></div>
+      <div class="login-hint">Déjà un compte ? <a href="connexion.html">Se connecter</a></div>
+    </div>
+  </form>
+  </div>
+</div>
+
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="tick">✓</div>
+    <h3>Compte créé</h3>
+    <p id="confirm-msg">Bienvenue sur VioSend ! Votre abonnement est actif.</p>
+    <button onclick="location.href='dashboard.html'">Accéder au dashboard</button>
+  </div>
+</div>
+
+<script type="module" src="https://cdn.spline.design/@splinetool/viewer@2.0.36/build/spline-viewer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script>
+  const plans = document.querySelectorAll('.plan');
+  const currencySelect = document.getElementById('currency-select');
+  const totalVal = document.getElementById('total-val');
+  const durLabels = {1:'/ mois', 12:'/ an', 60:'/ 5 ans'};
+
+  let subPayMethod = 'carte';
+  document.querySelectorAll('.pay-method-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.pay-method-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      subPayMethod = btn.dataset.method;
+      document.getElementById('pay-fields-carte').style.display = subPayMethod === 'carte' ? 'block' : 'none';
+      document.getElementById('pay-fields-sim').style.display = subPayMethod === 'sim' ? 'block' : 'none';
+    });
+  });
+
+  function updateTotal(){
+    const active = document.querySelector('.plan.active');
+    const currency = currencySelect.value;
+    const priceEl = active.querySelector('.price');
+    const amount = currency === 'EUR' ? priceEl.dataset.eur : priceEl.dataset.usd;
+    const symbol = currency === 'EUR' ? '€' : '$';
+    priceEl.textContent = symbol + priceEl.dataset[currency.toLowerCase()];
+    plans.forEach(p=>{
+      const pr = p.querySelector('.price');
+      pr.textContent = symbol + pr.dataset[currency.toLowerCase()];
+    });
+    totalVal.textContent = symbol + amount + ' ' + durLabels[active.dataset.months];
+  }
+
+  plans.forEach(p=>{
+    p.addEventListener('click', ()=>{
+      plans.forEach(x=>x.classList.remove('active'));
+      p.classList.add('active');
+      updateTotal();
+    });
+  });
+  currencySelect.addEventListener('change', updateTotal);
+  updateTotal();
+
+  // card preview live update
+  const cardNumberInput = document.getElementById('card-number');
+  const cardNameInput = document.getElementById('card-name');
+  const cardExpInput = document.getElementById('card-exp');
+  const pvNumber = document.getElementById('pv-number');
+  const pvName = document.getElementById('pv-name');
+  const pvExp = document.getElementById('pv-exp');
+
+  cardNumberInput.addEventListener('input', (e)=>{
+    let v = e.target.value.replace(/\D/g,'').slice(0,16);
+    v = v.replace(/(.{4})/g, '$1 ').trim();
+    e.target.value = v;
+    pvNumber.textContent = v.padEnd(19,'•').replace(/(.{4})(?=.)/g,'$1 ').slice(0,19) || '•••• •••• •••• ••••';
+  });
+  cardNameInput.addEventListener('input', (e)=>{
+    pvName.textContent = e.target.value.toUpperCase() || 'VOTRE NOM';
+  });
+  cardExpInput.addEventListener('input', (e)=>{
+    let v = e.target.value.replace(/\D/g,'').slice(0,4);
+    if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+    e.target.value = v;
+    pvExp.textContent = v || 'MM/AA';
+  });
+
+  document.getElementById('signup-form').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const submitBtn = document.getElementById('submit-btn');
+    const errorBox = document.getElementById('signup-error');
+    errorBox.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Création du compte...';
+
+    const firstName = document.getElementById('reg-first-name').value.trim();
+    const lastName = document.getElementById('reg-last-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const active = document.querySelector('.plan.active');
+    const currency = currencySelect.value;
+    const planKey = {1:'1_mois', 12:'1_an', 60:'5_ans'}[active.dataset.months];
+    const price = currency === 'EUR' ? parseFloat(active.querySelector('.price').dataset.eur) : parseFloat(active.querySelector('.price').dataset.usd);
+
+    let paymentInfo = '';
+    if (subPayMethod === 'carte') {
+      const card = document.getElementById('card-number').value.trim();
+      if (!card) {
+        errorBox.textContent = "Renseignez votre numéro de carte.";
+        errorBox.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Créer mon compte et payer';
+        return;
+      }
+      paymentInfo = 'carte';
+    } else {
+      const phone = document.getElementById('sim-phone').value.trim();
+      if (!phone) {
+        errorBox.textContent = "Renseignez votre numéro de carte SIM.";
+        errorBox.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Créer mon compte et payer';
+        return;
+      }
+      paymentInfo = 'sim';
+    }
+
+    // 1. Créer le compte d'authentification
+    const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+      email: email,
+      password: password
+    });
+
+    if (authError) {
+      errorBox.textContent = authError.message.includes('already registered')
+        ? "Un compte existe déjà avec cet e-mail."
+        : "Erreur : " + authError.message;
+      errorBox.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Créer mon compte et payer';
+      return;
+    }
+
+    const userId = authData.user ? authData.user.id : null;
+
+    if (userId) {
+      // 2. Créer le profil
+      await supabaseClient.from('profiles').insert({
+        id: userId,
+        first_name: firstName,
+        last_name: lastName,
+        currency: currency
+      });
+
+      // 3. Enregistrer l'abonnement choisi
+      await supabaseClient.from('subscriptions').insert({
+        user_id: userId,
+        plan: planKey,
+        currency: currency,
+        price: price,
+        payment_method: paymentInfo
+      });
+    }
+
+    document.getElementById('confirm-msg').textContent =
+      `Bienvenue sur VioSend, ${firstName} ! Votre abonnement ${durLabels[active.dataset.months].replace('/ ','')} est actif.`;
+    document.getElementById('confirm-overlay').classList.add('show');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Créer mon compte et payer';
+  });
+</script>
+</body>
+</html>

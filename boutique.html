@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boutique — VioSend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  :root{ --surface:#16101F; --surface-2:#1C1428; }
+  .shop-colors-violet{ --shop-a:#8B5CF6; --shop-b:#EC4899; }
+  .shop-colors-orange{ --shop-a:#FB923C; --shop-b:#EC4899; }
+  .shop-colors-green{ --shop-a:#34D399; --shop-b:#22C55E; }
+  .shop-colors-blue{ --shop-a:#60A5FA; --shop-b:#8B5CF6; }
+
+  .shop-banner{
+    padding:8vh 6vw 6vh; text-align:center; position:relative; overflow:hidden;
+  }
+  .shop-banner::before{
+    content:''; position:absolute; width:500px; height:500px; border-radius:50%;
+    background:linear-gradient(135deg, var(--shop-a, #8B5CF6), var(--shop-b, #EC4899));
+    filter:blur(120px); opacity:0.3; top:-220px; left:50%; transform:translateX(-50%);
+  }
+  .shop-avatar{
+    width:76px; height:76px; border-radius:20px; margin:0 auto 20px;
+    background:linear-gradient(135deg, var(--shop-a, #8B5CF6), var(--shop-b, #EC4899));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Sora',sans-serif; font-weight:800; font-size:1.8rem; position:relative; z-index:1;
+  }
+  .shop-banner h1{ position:relative; z-index:1; font-family:'Sora',sans-serif; font-size:clamp(1.8rem,3.4vw,2.4rem); }
+  .shop-banner p{ position:relative; z-index:1; color:var(--text-muted); margin-top:10px; max-width:44ch; margin-left:auto; margin-right:auto; }
+  .shop-badge{
+    position:relative; z-index:1; display:inline-flex; align-items:center; gap:8px;
+    margin-top:18px; font-size:0.78rem; color:var(--text-muted);
+    border:1px solid var(--line); padding:6px 14px; border-radius:100px;
+  }
+
+  .shop-products{ max-width:1000px; margin:0 auto; padding:0 6vw 12vh; display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; }
+  .product-card{
+    background:#0d0d10; border:1px solid var(--line); border-radius:18px; padding:24px;
+    display:flex; flex-direction:column;
+  }
+  .product-card .thumb{
+    height:120px; border-radius:12px; margin-bottom:16px;
+    background:linear-gradient(150deg, var(--shop-a,#8B5CF6), var(--shop-b,#EC4899)); opacity:0.85;
+  }
+  .product-card .cat-badge{
+    display:inline-block; font-size:0.7rem; color:var(--text-muted); border:1px solid var(--line);
+    padding:4px 10px; border-radius:100px; margin-bottom:10px; align-self:flex-start;
+  }
+  .product-card h3{ font-family:'Sora',sans-serif; font-size:1.05rem; }
+  .product-card .price{ font-family:'Sora',sans-serif; font-weight:700; font-size:1.2rem; margin-top:10px; color:#fff; }
+  .buy-btn{
+    margin-top:16px; padding:12px; border-radius:10px; border:none; cursor:pointer; font-family:inherit;
+    background:linear-gradient(90deg, var(--shop-a,#8B5CF6), var(--shop-b,#EC4899)); color:#fff; font-weight:600; font-size:0.9rem;
+  }
+  .buy-btn:hover{ filter:brightness(1.08); }
+
+  .empty-state, .not-found{ text-align:center; padding:16vh 6vw; color:var(--text-muted); }
+
+  /* checkout modal */
+  .checkout-overlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .checkout-overlay.show{ display:flex; }
+  .checkout-box{ background:#0d0d10; border:1px solid var(--line); border-radius:20px; padding:32px; max-width:420px; width:100%; }
+  .checkout-box h3{ font-family:'Sora',sans-serif; font-size:1.15rem; margin-bottom:6px; }
+  .checkout-box .sub{ color:var(--text-muted); font-size:0.88rem; margin-bottom:22px; }
+  .field{ margin-bottom:14px; }
+  .field label{ display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:6px; }
+  .field input{
+    width:100%; padding:11px 13px; border-radius:10px;
+    background:var(--surface); border:1px solid rgba(255,255,255,0.14); color:#fff; font-size:0.9rem; font-family:inherit;
+  }
+  .row-2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .checkout-total{ display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); margin:14px 0; font-weight:600; }
+  .pay-method-toggle{ display:flex; gap:8px; }
+  .pay-method-btn{
+    flex:1; padding:10px 8px; border-radius:10px; border:1px solid rgba(255,255,255,0.14);
+    background:var(--surface); color:var(--text-muted); font-size:0.82rem; font-family:inherit; cursor:pointer;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .pay-method-btn.active{ border-color:var(--violet); color:#fff; background:linear-gradient(150deg, rgba(139,92,246,0.18), rgba(236,72,153,0.08)); }
+  .pay-btn{
+    width:100%; padding:14px; border-radius:12px; border:none; cursor:pointer; font-family:inherit;
+    background:linear-gradient(90deg, var(--violet), var(--pink)); color:white; font-weight:600; font-size:0.95rem;
+  }
+  .close-checkout{ background:transparent; border:none; color:var(--text-muted); cursor:pointer; float:right; font-size:1.1rem; }
+  .checkout-success{ display:none; text-align:center; }
+  .checkout-success.show{ display:block; }
+  .checkout-success .tick{ width:52px; height:52px; border-radius:50%; margin:0 auto 14px; background:rgba(52,211,153,0.15); display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:#34D399; }
+
+  @media(max-width:380px){
+    .row-2{ grid-template-columns:1fr; }
+    .checkout-box{ padding:24px 20px; }
+  }
+  @media(max-width:600px){
+    .shop-banner{ padding:6vh 6vw 5vh; }
+    .shop-products{ grid-template-columns:1fr 1fr; gap:14px; }
+  }
+  @media(max-width:400px){
+    .shop-products{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="spline-bg">
+  <spline-viewer url="https://prod.spline.design/lBtAFIOp01PPBggx/scene.splinecode"></spline-viewer>
+</div>
+
+<header>
+    <div class="logo-container">
+        <img src="mon.png" alt="VioSend">
+    </div>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <div class="header-right" id="header-right">
+        <nav class="nav-center">
+            <button class="nav-btn" onclick="location.href='produits.html'">Produits</button>
+            <button class="nav-btn" onclick="location.href='communaute.html'">Communauté</button>
+            <button class="nav-btn" onclick="location.href='aide.html'">Aide</button>
+            <button class="nav-btn" onclick="location.href='dashboard.html'">Notre Dashboard</button>
+        </nav>
+        <a href="connexion.html" class="connexion-link">Connexion</a>
+        <a class="download-btn" href="VioSend-Presentation.pdf" download>Télécharger</a>
+    </div>
+</header>
+
+<div id="shop-content">
+  <div class="empty-state">Chargement de la boutique...</div>
+</div>
+
+<div class="checkout-overlay" id="checkout-overlay">
+  <div class="checkout-box">
+    <button class="close-checkout" id="close-checkout">✕</button>
+    <div id="checkout-form-wrap">
+      <h3 id="checkout-product-name">Produit</h3>
+      <div class="sub">Achat sécurisé via VioSend</div>
+      <div class="field"><label>Votre nom</label><input type="text" id="buyer-name" required></div>
+      <div class="field"><label>Votre e-mail</label><input type="email" id="buyer-email" required></div>
+
+      <div class="field">
+        <label>Moyen de paiement</label>
+        <div class="pay-method-toggle">
+          <button type="button" class="pay-method-btn active" data-method="carte">💳 Carte bancaire</button>
+          <button type="button" class="pay-method-btn" data-method="sim">📱 Carte SIM / Mobile Money</button>
+        </div>
+      </div>
+
+      <div id="pay-fields-carte">
+        <div class="field"><label>Numéro de carte</label><input type="text" id="buyer-card" placeholder="1234 5678 9012 3456" maxlength="19"></div>
+        <div class="row-2">
+          <div class="field"><label>Expiration</label><input type="text" id="buyer-exp" placeholder="MM/AA" maxlength="5"></div>
+          <div class="field"><label>CVV</label><input type="text" id="buyer-cvv" placeholder="123" maxlength="3"></div>
+        </div>
+      </div>
+
+      <div id="pay-fields-sim" style="display:none;">
+        <div class="field">
+          <label>Opérateur</label>
+          <select id="buyer-operator">
+            <option>MTN Mobile Money</option>
+            <option>Moov Money</option>
+            <option>Orange Money</option>
+            <option>Wave</option>
+          </select>
+        </div>
+        <div class="field"><label>Numéro de téléphone (carte SIM)</label><input type="text" id="buyer-phone" placeholder="+229 00 00 00 00"></div>
+      </div>
+
+      <div class="checkout-total"><span>Total</span><span id="checkout-total-val">0 F</span></div>
+      <button class="pay-btn" id="pay-btn">Payer maintenant</button>
+    </div>
+    <div class="checkout-success" id="checkout-success">
+      <div class="tick">✓</div>
+      <h3>Achat confirmé</h3>
+      <p style="color:var(--text-muted); margin-top:8px; font-size:0.9rem;" id="checkout-success-msg"></p>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="https://cdn.spline.design/@splinetool/viewer@2.0.36/build/spline-viewer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('b');
+  let currentBoutique = null;
+  let currentProduct = null;
+
+  function fmt(n){ return Math.round(n).toLocaleString('fr-FR') + ' F'; }
+  function catLabel(cat){
+    const labels = { fichier:'📁 Fichier', formation:'🎓 Formation', licence:'🔑 Licence', bundle:'📦 Bundle', coaching:'🎯 Coaching', service:'🛠️ Service' };
+    return labels[cat] || '📁 Fichier';
+  }
+
+  async function loadShop(){
+    const content = document.getElementById('shop-content');
+    if (!slug) {
+      content.innerHTML = '<div class="not-found">Aucune boutique indiquée dans le lien.</div>';
+      return;
+    }
+
+    const { data: boutique, error } = await supabaseClient
+      .from('boutiques')
+      .select('*')
+      .eq('lien_slug', slug)
+      .single();
+
+    if (error || !boutique) {
+      content.innerHTML = '<div class="not-found">Cette boutique n\\'existe pas ou plus.</div>';
+      return;
+    }
+    currentBoutique = boutique;
+
+    const { data: produits } = await supabaseClient
+      .from('produits')
+      .select('*')
+      .eq('boutique_id', boutique.id)
+      .order('created_at', { ascending: true });
+
+    document.body.classList.add('shop-colors-' + (boutique.couleur || 'violet'));
+
+    let productsHtml = '';
+    if (!produits || produits.length === 0) {
+      productsHtml = '<div class="empty-state">Aucun produit pour le moment.</div>';
+    } else {
+      productsHtml = produits.map(p => `
+        <div class="product-card">
+          <div class="thumb"></div>
+          <span class="cat-badge">${catLabel(p.categorie)}</span>
+          <h3>${p.titre}</h3>
+          <div class="price">${fmt(p.prix)}</div>
+          <button class="buy-btn" onclick='openCheckout(${JSON.stringify(p).replace(/'/g, "&#39;")})'>Acheter</button>
+        </div>
+      `).join('');
+    }
+
+    content.innerHTML = `
+      <div class="shop-banner">
+        <div class="shop-avatar">${boutique.nom.charAt(0).toUpperCase()}</div>
+        <h1>${boutique.nom}</h1>
+        <p>${boutique.description || ''}</p>
+        <div class="shop-badge">🔒 Boutique VioSend vérifiée</div>
+      </div>
+      <div class="shop-products" id="products-grid">${productsHtml}</div>
+    `;
+  }
+
+  function openCheckout(product){
+    currentProduct = product;
+    document.getElementById('checkout-product-name').textContent = product.titre;
+    document.getElementById('checkout-total-val').textContent = fmt(product.prix);
+    document.getElementById('checkout-form-wrap').style.display = 'block';
+    document.getElementById('checkout-success').classList.remove('show');
+    document.getElementById('checkout-overlay').classList.add('show');
+  }
+  document.getElementById('close-checkout').addEventListener('click', ()=>{
+    document.getElementById('checkout-overlay').classList.remove('show');
+  });
+
+  let payMethod = 'carte';
+  document.querySelectorAll('.pay-method-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.pay-method-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      payMethod = btn.dataset.method;
+      document.getElementById('pay-fields-carte').style.display = payMethod === 'carte' ? 'block' : 'none';
+      document.getElementById('pay-fields-sim').style.display = payMethod === 'sim' ? 'block' : 'none';
+    });
+  });
+
+  document.getElementById('buyer-card').addEventListener('input', (e)=>{
+    let v = e.target.value.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim();
+    e.target.value = v;
+  });
+  document.getElementById('buyer-exp').addEventListener('input', (e)=>{
+    let v = e.target.value.replace(/\D/g,'').slice(0,4);
+    if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+    e.target.value = v;
+  });
+
+  document.getElementById('pay-btn').addEventListener('click', async ()=>{
+    const name = document.getElementById('buyer-name').value.trim();
+    const email = document.getElementById('buyer-email').value.trim();
+    if (!name || !email || !currentProduct || !currentBoutique) return;
+
+    let paymentInfo = '';
+    if (payMethod === 'carte') {
+      const card = document.getElementById('buyer-card').value.trim();
+      if (!card) return;
+      paymentInfo = `Carte bancaire •• ${card.slice(-4)}`;
+    } else {
+      const phone = document.getElementById('buyer-phone').value.trim();
+      const operator = document.getElementById('buyer-operator').value;
+      if (!phone) return;
+      paymentInfo = `${operator} — ${phone}`;
+    }
+
+    const payBtn = document.getElementById('pay-btn');
+    payBtn.disabled = true;
+    payBtn.textContent = 'Paiement...';
+
+    // La vente est enregistrée sur le compte du vendeur (la boutique)
+    await supabaseClient.from('transactions').insert({
+      user_id: currentBoutique.user_id,
+      type: 'vente',
+      montant: currentProduct.prix,
+      devise: 'XOF',
+      description: `Vente "${currentProduct.titre}" à ${name} (${email}) — payé via ${paymentInfo}`
+    });
+
+    document.getElementById('checkout-form-wrap').style.display = 'none';
+    document.getElementById('checkout-success-msg').textContent =
+      currentProduct.lien_livraison
+        ? `Un e-mail va être envoyé à ${email} avec votre accès. Lien : ${currentProduct.lien_livraison}`
+        : `Un e-mail va être envoyé à ${email} avec votre accès.`;
+    document.getElementById('checkout-success').classList.add('show');
+    payBtn.disabled = false;
+    payBtn.textContent = 'Payer maintenant';
+  });
+
+  loadShop();
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VioSend — Connexion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  :root{ --surface:#16101F; }
+  .split-wrap{ display:grid; grid-template-columns:1fr 1.1fr; min-height:calc(100vh - 100px); }
+  .brand-panel{
+    position:relative; overflow:hidden; padding:8vh 5vw;
+    display:flex; flex-direction:column; justify-content:center;
+    background:linear-gradient(160deg, #1c1428, #0a0712 65%);
+    border-right:1px solid var(--line);
+  }
+  .brand-panel::before{
+    content:''; position:absolute; width:420px; height:420px; border-radius:50%;
+    background:conic-gradient(from 90deg, var(--violet), var(--pink), var(--orange), var(--violet));
+    filter:blur(110px); opacity:0.35; top:-140px; left:-100px;
+  }
+  .brand-panel h2{
+    position:relative; z-index:1; font-family:'Sora',sans-serif; font-weight:300; font-size:clamp(1.8rem,3.4vw,2.6rem); line-height:1.15; max-width:14ch;
+  }
+  .brand-panel h2 em{ font-style:italic; font-weight:600;
+    background:linear-gradient(90deg, var(--violet), var(--pink) 60%, var(--orange));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .brand-pills{ position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:10px; margin-top:36px; }
+  .brand-pill{
+    display:flex; align-items:center; gap:8px; background:#fff; color:#111;
+    padding:9px 16px; border-radius:100px; font-size:0.85rem; font-weight:600;
+  }
+
+  .form-side{ display:flex; align-items:center; justify-content:center; padding:6vh 6vw; }
+  .login-wrap{ max-width:380px; width:100%; }
+  .login-wrap h1{ font-family:'Sora',sans-serif; font-size:1.9rem; }
+  .login-wrap > p{ color:var(--text-muted); margin-top:10px; margin-bottom:30px; }
+  .panel{ background:#0d0d10; border:1px solid var(--line); border-radius:20px; padding:32px; }
+  .field{ margin-bottom:16px; }
+  .field label{ display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:7px; }
+  .field input{
+    width:100%; padding:12px 14px; border-radius:10px;
+    background:var(--surface); border:1px solid rgba(255,255,255,0.14); color:#fff; font-size:0.92rem; font-family:inherit;
+  }
+  .field input:focus{ outline:2px solid var(--violet); outline-offset:1px; }
+  .submit-btn{
+    width:100%; padding:14px; border-radius:12px; border:none; cursor:pointer; font-family:inherit; margin-top:8px;
+    background:linear-gradient(90deg, var(--violet), var(--pink)); color:white; font-weight:600; font-size:0.98rem;
+  }
+  .submit-btn:hover{ filter:brightness(1.08); }
+  .signup-hint{ text-align:center; margin-top:24px; color:var(--text-muted); font-size:0.92rem; }
+  .signup-hint a{ color:#fff; font-weight:600; text-decoration:underline; }
+
+  @media(max-width:860px){ .split-wrap{ grid-template-columns:1fr; } .brand-panel{ display:none; } }
+</style>
+</head>
+<body>
+
+<div class="spline-bg">
+  <spline-viewer url="https://prod.spline.design/lBtAFIOp01PPBggx/scene.splinecode"></spline-viewer>
+</div>
+
+<header>
+    <div class="logo-container">
+        <img src="mon.png" alt="VioSend">
+    </div>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <div class="header-right" id="header-right">
+        <nav class="nav-center">
+            <button class="nav-btn" onclick="location.href='produits.html'">Produits</button>
+            <button class="nav-btn" onclick="location.href='communaute.html'">Communauté</button>
+            <button class="nav-btn" onclick="location.href='aide.html'">Aide</button>
+            <button class="nav-btn" onclick="location.href='dashboard.html'">Notre Dashboard</button>
+        </nav>
+        <a href="connexion.html" class="connexion-link">Connexion</a>
+        <a class="download-btn" href="VioSend-Presentation.pdf" download>Télécharger</a>
+    </div>
+</header>
+
+<div class="split-wrap">
+  <div class="brand-panel">
+    <h2>Envoyez, empruntez et <em>vendez</em> vos produits</h2>
+    <div class="brand-pills">
+      <span class="brand-pill">📁 Fichiers</span>
+      <span class="brand-pill">🎓 Formations</span>
+      <span class="brand-pill">🔑 Licences</span>
+      <span class="brand-pill">📦 Bundles</span>
+      <span class="brand-pill">🎯 Coaching</span>
+      <span class="brand-pill">🛠️ Services</span>
+    </div>
+  </div>
+
+  <div class="form-side">
+    <div class="login-wrap">
+      <h1>Bon retour</h1>
+      <p>Connectez-vous à votre compte VioSend.</p>
+      <div class="panel">
+        <form id="login-form">
+          <div class="field"><label>Adresse e-mail</label><input type="email" id="login-email" required placeholder="vous@exemple.com"></div>
+          <div class="field"><label>Mot de passe</label><input type="password" id="login-password" required placeholder="••••••••"></div>
+          <button type="submit" class="submit-btn" id="login-btn">Se connecter</button>
+          <div id="login-error" style="display:none; color:#F87171; font-size:0.85rem; margin-top:12px; text-align:center;"></div>
+        </form>
+        <div class="signup-hint">Pas encore de compte ? <a href="inscription.html">Créer un compte</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="https://cdn.spline.design/@splinetool/viewer@2.0.36/build/spline-viewer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script>
+  document.getElementById('login-form').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const btn = document.getElementById('login-btn');
+    const errorBox = document.getElementById('login-error');
+    errorBox.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Connexion...';
+
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      errorBox.textContent = "E-mail ou mot de passe incorrect.";
+      errorBox.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Se connecter';
+      return;
+    }
+
+    location.href = 'dashboard.html';
+  });
+</script>
+</body>
+</html>

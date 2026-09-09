@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VioSend — Notre Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  :root{
+    --surface: #16101F;
+    --surface-2: #1C1428;
+    --positive: #34D399;
+    --negative: #F87171;
+  }
+  .demo-page{ position: relative; padding: 6vh 6vw 14vh; }
+  .demo-head{ max-width: 640px; margin: 0 auto 44px; text-align: center; }
+  .demo-head h1{ font-family:'Sora',sans-serif; font-size: clamp(1.9rem,3vw,2.6rem); }
+  .demo-head p{ color: var(--text-muted); margin-top: 14px; font-size: 1.05rem; }
+
+  .app{
+    max-width: 1120px; margin: 0 auto;
+    display: grid; grid-template-columns: 230px 1fr;
+    border: 1px solid rgba(255,255,255,0.14); border-radius: 24px;
+    overflow: hidden; background: var(--surface);
+    box-shadow: 0 60px 100px -40px rgba(0,0,0,0.6);
+  }
+  .app-side{ background: #0f0b1a; border-right: 1px solid var(--line); padding: 26px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .app-side .who{ display: flex; align-items: center; gap: 10px; padding: 8px 10px 22px; }
+  .avatar{ width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, var(--violet), var(--orange)); }
+  .who .name{ font-weight: 600; font-size: 0.92rem; }
+  .who .sub{ font-size: 0.76rem; color: #6E6580; }
+  .side-btn{
+    display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px;
+    color: var(--text-muted); font-size: 0.9rem; font-weight: 500; background: transparent; width: 100%; text-align: left; border: none; cursor: pointer; font-family: inherit;
+  }
+  .side-btn .ic{ width: 18px; text-align: center; }
+  .side-btn:hover{ background: rgba(255,255,255,0.04); color: #fff; }
+  .side-btn.active{ background: var(--surface-2); color: #fff; }
+
+  .app-main{ padding: 30px 34px 40px; }
+  .app-topbar{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 26px; }
+  .app-topbar h3{ font-family:'Sora',sans-serif; font-size: 1.15rem; }
+  .app-topbar .pill{ font-size: 0.78rem; color: var(--text-muted); border: 1px solid rgba(255,255,255,0.14); padding: 6px 12px; border-radius: 100px; }
+
+  .pane{ display: none; }
+  .pane.active{ display: block; }
+
+  .balance-row{ display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 16px; margin-bottom: 26px; }
+  .bal-card{ background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .bal-card.main{ background: linear-gradient(150deg, rgba(139,92,246,0.22), rgba(236,72,153,0.12)); border-color: rgba(139,92,246,0.3); }
+  .bal-card .lbl{ color: var(--text-muted); font-size: 0.78rem; }
+  .bal-card .amt{ font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.55rem; margin-top: 8px; }
+  .bal-card .delta{ font-size: 0.78rem; margin-top: 6px; }
+  .delta.up{ color: var(--positive); }
+  .delta.down{ color: var(--negative); }
+
+  .tx-list{ background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; padding: 6px 20px; }
+  .tx{ display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--line); }
+  .tx:last-child{ border-bottom: none; }
+  .tx-left{ display: flex; align-items: center; gap: 12px; }
+  .tx-ic{ width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: var(--surface); }
+  .tx-name{ font-size: 0.9rem; font-weight: 500; }
+  .tx-sub{ font-size: 0.76rem; color: #6E6580; }
+  .tx-amt{ font-family: 'Sora', sans-serif; font-weight: 600; font-size: 0.92rem; }
+
+  .section-title{ font-size: 0.85rem; color: var(--text-muted); margin: 26px 0 12px; font-weight: 500; }
+
+  .transfer-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .field{ margin-bottom: 16px; }
+  .field label{ display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 7px; }
+  .field select, .field input{
+    width: 100%; padding: 12px 14px; border-radius: 10px;
+    background: var(--surface); border: 1px solid rgba(255,255,255,0.14); color: #fff; font-size: 0.92rem; font-family: inherit;
+  }
+  .field select:focus, .field input:focus{ outline: 2px solid var(--violet); outline-offset: 1px; }
+  .recap{ background: var(--surface-2); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin-top: 6px; }
+  .recap-row{ display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); padding: 6px 0; }
+  .recap-row.total{ color: #fff; font-weight: 600; border-top: 1px solid var(--line); margin-top: 6px; padding-top: 12px; }
+  .send-btn{
+    margin-top: 18px; width: 100%; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-family: inherit;
+    background: linear-gradient(90deg, var(--violet), var(--pink)); color: white; font-weight: 600; font-size: 0.95rem;
+  }
+  .send-btn:hover{ filter: brightness(1.08); }
+  .confirm{ display: none; text-align: center; padding: 30px 10px; }
+  .confirm.show{ display: block; }
+  .confirm .tick{ width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 16px; background: rgba(52,211,153,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--positive); }
+  .confirm h4{ font-family: 'Sora', sans-serif; font-size: 1.2rem; }
+  .confirm p{ color: var(--text-muted); margin-top: 6px; font-size: 0.9rem; }
+  .confirm button{ margin-top: 20px; padding: 10px 22px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); color: #fff; background: transparent; font-weight: 500; cursor: pointer; font-family: inherit; }
+
+  .loan-hero{ background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; padding: 26px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .loan-hero .amt{ font-family: 'Sora', sans-serif; font-size: 2rem; font-weight: 700; }
+  .slider-wrap{ margin: 18px 0 6px; }
+  input[type=range]{ width: 100%; accent-color: var(--violet); }
+  .loan-terms{ display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 18px; }
+  .term-box{ background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; text-align: center; }
+  .term-box .v{ font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.05rem; }
+  .term-box .l{ font-size: 0.75rem; color: #6E6580; margin-top: 4px; }
+
+  @media(max-width:900px){
+    .app{ grid-template-columns: 1fr; }
+    .app-side{ flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--line); }
+    .app-side .who{ display: none; }
+    .balance-row{ grid-template-columns: 1fr; }
+    .transfer-grid{ grid-template-columns: 1fr; }
+    .loan-terms{ grid-template-columns: 1fr; }
+  }
+
+  /* ---- MacBook Pro frame ---- */
+  .laptop{
+    max-width: 1180px; margin: 0 auto;
+  }
+  .laptop-screen{
+    background: #0a0a0c;
+    border: 1px solid #3a3a3f;
+    border-radius: 18px 18px 6px 6px;
+    padding: 16px 16px 10px;
+    box-shadow: 0 60px 120px -40px rgba(0,0,0,0.8), inset 0 0 0 2px #050506;
+    position: relative;
+  }
+  .laptop-notch{
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 130px; height: 16px; background: #0a0a0c;
+    border-radius: 0 0 10px 10px;
+  }
+  .laptop-screen-inner{
+    background: var(--surface);
+    border-radius: 8px;
+    overflow: hidden;
+    max-height: 640px;
+    overflow-y: auto;
+  }
+  .laptop-base{
+    height: 16px;
+    background: linear-gradient(180deg, #d8d8dc, #b7b7bd);
+    border-radius: 0 0 10px 10px;
+    position: relative;
+  }
+  .laptop-base::after{
+    content:'';
+    position:absolute; left:50%; top:0; transform:translateX(-50%);
+    width:120px; height:16px;
+    background:#9a9aa0;
+    border-radius:0 0 8px 8px;
+  }
+  .laptop .app{ box-shadow:none; border-radius:0; border:none; max-width:none; }
+  @media(max-width:760px){
+    .laptop-screen{ border-radius:12px; padding:8px 8px 5px; }
+    .laptop-screen-inner{ max-height:none; }
+    .laptop-notch{ width:90px; }
+    .laptop-base::after{ width:80px; }
+    .app-main{ padding:20px 18px 26px; }
+    .demo-page{ padding:4vh 4vw 8vh; }
+    .app-topbar{ flex-wrap:wrap; gap:10px; }
+  }
+  @media(max-width:480px){
+    .app-side{ padding:14px 10px; }
+    .side-btn span.ic{ margin-right:2px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="spline-bg">
+  <spline-viewer url="https://prod.spline.design/lBtAFIOp01PPBggx/scene.splinecode"></spline-viewer>
+</div>
+
+<header>
+    <div class="logo-container">
+        <img src="mon.png" alt="VioSend">
+    </div>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <div class="header-right" id="header-right">
+        <nav class="nav-center">
+            <button class="nav-btn" onclick="location.href='produits.html'">Produits</button>
+            <button class="nav-btn" onclick="location.href='communaute.html'">Communauté</button>
+            <button class="nav-btn" onclick="location.href='aide.html'">Aide</button>
+            <button class="nav-btn" onclick="location.href='dashboard.html'">Notre Dashboard</button>
+        </nav>
+        <a href="connexion.html" class="connexion-link">Connexion</a>
+        <a class="download-btn" href="VioSend-Presentation.pdf" download>Télécharger</a>
+    </div>
+</header>
+
+<section class="demo-page">
+  <div class="demo-head">
+    <h1>Le dashboard, en conditions réelles</h1>
+    <p>Ceci est une simulation interactive — les comptes, montants et transferts sont fictifs, mais le fonctionnement est celui du vrai produit.</p>
+  </div>
+
+  <div class="laptop">
+   <div class="laptop-screen">
+    <div class="laptop-notch"></div>
+    <div class="laptop-screen-inner">
+    <div class="app">
+    <div class="app-side">
+      <div class="who"><span class="avatar"></span><div><div class="name" id="user-name">Compte démo</div><div class="sub" id="user-email">demo@viosend.com</div></div></div>
+      <button class="side-btn active" data-pane="comptes"><span class="ic">▤</span> Comptes</button>
+      <button class="side-btn" data-pane="transferts"><span class="ic">⇄</span> Transferts</button>
+      <button class="side-btn" data-pane="prets"><span class="ic">◎</span> Prêts</button>
+      <button class="side-btn" onclick="location.href='boutique-creer.html'"><span class="ic">🏬</span> Ma boutique</button>
+      <button class="side-btn" id="logout-btn" style="margin-top:auto;"><span class="ic">⏻</span> Déconnexion</button>
+    </div>
+
+    <div class="app-main">
+
+      <div class="pane active" id="pane-comptes">
+        <div class="app-topbar"><h3>Vue d'ensemble</h3><span class="pill" id="clock">—</span></div>
+        <div class="balance-row">
+          <div class="bal-card main">
+            <div class="lbl">Solde total</div>
+            <div class="amt" id="bal-total">1 284 500 F</div>
+            <div class="delta up">+2,4% ce mois</div>
+          </div>
+          <div class="bal-card">
+            <div class="lbl">Dépenses (30j)</div>
+            <div class="amt">312 900 F</div>
+            <div class="delta down">−6,1% vs mois dernier</div>
+          </div>
+          <div class="bal-card">
+            <div class="lbl">Prêt actif</div>
+            <div class="amt">0 F</div>
+            <div class="delta">Aucun prêt en cours</div>
+          </div>
+        </div>
+        <div class="section-title">Transactions récentes</div>
+        <div class="tx-list" id="tx-list"></div>
+      </div>
+
+      <div class="pane" id="pane-transferts">
+        <div class="app-topbar"><h3>Nouveau transfert</h3><span class="pill">Simulation</span></div>
+        <div id="transfer-form">
+          <div class="transfer-grid">
+            <div>
+              <div class="field">
+                <label>Destinataire</label>
+                <input type="text" id="t-dest" placeholder="Nom du destinataire" value="Aïcha K.">
+              </div>
+              <div class="field">
+                <label>Pays de destination</label>
+                <select id="t-country">
+                  <option>Côte d'Ivoire</option>
+                  <option selected>Sénégal</option>
+                  <option>France</option>
+                  <option>Nigeria</option>
+                  <option>Canada</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Méthode de réception</label>
+                <select id="t-method">
+                  <option>Carte bancaire</option>
+                  <option>Carte SIM / mobile money</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <div class="field">
+                <label>Montant à envoyer (F CFA)</label>
+                <input type="number" id="t-amount" value="50000" min="500" step="500">
+              </div>
+              <div class="recap">
+                <div class="recap-row"><span>Montant</span><span id="r-amount">50 000 F</span></div>
+                <div class="recap-row"><span>Frais VioSend</span><span id="r-fee">750 F</span></div>
+                <div class="recap-row"><span>Taux appliqué (IA)</span><span id="r-rate">optimal</span></div>
+                <div class="recap-row total"><span>Total débité</span><span id="r-total">50 750 F</span></div>
+              </div>
+              <button class="send-btn" id="send-btn">Envoyer maintenant</button>
+            </div>
+          </div>
+        </div>
+        <div class="confirm" id="confirm">
+          <div class="tick">✓</div>
+          <h4>Transfert envoyé</h4>
+          <p id="confirm-detail">50 000 F envoyés à Aïcha K. — Sénégal</p>
+          <button id="confirm-again">Faire un autre transfert</button>
+        </div>
+      </div>
+
+      <div class="pane" id="pane-prets">
+        <div class="app-topbar"><h3>Simulateur de prêt</h3><span class="pill">Score IA : 812</span></div>
+        <div class="loan-hero">
+          <div>
+            <div class="lbl" style="color:var(--text-muted); font-size:0.8rem;">Montant demandé</div>
+            <div class="amt" id="loan-amt">400 000 F</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="lbl" style="color:var(--text-muted); font-size:0.8rem;">Mensualité estimée</div>
+            <div class="amt" id="loan-month" style="font-size:1.4rem;">36 800 F</div>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <label style="font-size:0.8rem; color:var(--text-muted);">Montant : <span id="loan-amt-label">400 000</span> F CFA</label>
+          <input type="range" id="loan-slider" min="50000" max="3000000" step="10000" value="400000">
+        </div>
+        <div class="slider-wrap">
+          <label style="font-size:0.8rem; color:var(--text-muted);">Durée : <span id="loan-dur-label">12</span> mois</label>
+          <input type="range" id="loan-duration" min="3" max="36" step="1" value="12">
+        </div>
+        <div class="loan-terms">
+          <div class="term-box"><div class="v" id="loan-rate">7,9%</div><div class="l">Taux annuel (IA)</div></div>
+          <div class="term-box"><div class="v" id="loan-total">441 600 F</div><div class="l">Coût total</div></div>
+          <div class="term-box"><div class="v">~2 min</div><div class="l">Délai de décision</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>
+  </div>
+  <div class="laptop-base"></div>
+  </div>
+</section>
+
+<script type="module" src="https://cdn.spline.design/@splinetool/viewer@2.0.36/build/spline-viewer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script>
+  // Vérifie que l'utilisateur est bien connecté, sinon renvoie vers la connexion
+  (async () => {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) {
+      location.href = 'connexion.html';
+      return;
+    }
+    document.getElementById('user-email').textContent = session.user.email;
+    const { data: profile } = await supabaseClient
+      .from('profiles')
+      .select('first_name, last_name')
+      .eq('id', session.user.id)
+      .single();
+    if (profile && profile.first_name) {
+      document.getElementById('user-name').textContent = profile.first_name + ' ' + (profile.last_name || '');
+    }
+  })();
+
+  document.getElementById('logout-btn').addEventListener('click', async ()=>{
+    await supabaseClient.auth.signOut();
+    location.href = 'connexion.html';
+  });
+</script>
+<script>
+  // clock
+  function tick(){
+    document.getElementById('clock').textContent = new Date().toLocaleTimeString('fr-FR');
+  }
+  tick(); setInterval(tick, 1000);
+
+  // nav between panes
+  const buttons = document.querySelectorAll('.side-btn');
+  const panes = document.querySelectorAll('.pane');
+  buttons.forEach(b=>{
+    b.addEventListener('click', ()=>{
+      buttons.forEach(x=>x.classList.remove('active'));
+      panes.forEach(p=>p.classList.remove('active'));
+      b.classList.add('active');
+      document.getElementById('pane-'+b.dataset.pane).classList.add('active');
+    });
+  });
+
+  // transaction list
+  const txData = [
+    {name:'Transfert reçu', sub:'De Moussa D. — France', amt:'+ 180 000 F', ic:'↙', up:true},
+    {name:'Abonnement cloud', sub:'Paiement récurrent', amt:'− 12 500 F', ic:'⎔', up:false},
+    {name:'Transfert envoyé', sub:'Vers Fatou S. — Sénégal', amt:'− 65 000 F', ic:'↗', up:false},
+    {name:'Recharge carte', sub:'Dépôt', amt:'+ 100 000 F', ic:'＋', up:true},
+  ];
+  const txList = document.getElementById('tx-list');
+  function renderTx(){
+    txList.innerHTML = '';
+    txData.forEach(tx=>{
+      const row = document.createElement('div');
+      row.className = 'tx';
+      row.innerHTML = `<div class="tx-left"><div class="tx-ic">${tx.ic}</div><div><div class="tx-name">${tx.name}</div><div class="tx-sub">${tx.sub}</div></div></div><div class="tx-amt" style="color:${tx.up?'var(--positive)':'var(--negative)'}">${tx.amt}</div>`;
+      txList.appendChild(row);
+    });
+  }
+  renderTx();
+
+  const fmt = n => Math.round(n).toLocaleString('fr-FR') + ' F';
+
+  const amountInput = document.getElementById('t-amount');
+  function updateRecap(){
+    const amt = parseFloat(amountInput.value)||0;
+    const fee = Math.max(250, Math.round(amt*0.015/50)*50);
+    document.getElementById('r-amount').textContent = fmt(amt);
+    document.getElementById('r-fee').textContent = fmt(fee);
+    document.getElementById('r-total').textContent = fmt(amt+fee);
+  }
+  amountInput.addEventListener('input', updateRecap);
+  updateRecap();
+
+  document.getElementById('send-btn').addEventListener('click', ()=>{
+    const amt = parseFloat(amountInput.value)||0;
+    const dest = document.getElementById('t-dest').value || 'destinataire';
+    const country = document.getElementById('t-country').value;
+    document.getElementById('confirm-detail').textContent = `${fmt(amt)} envoyés à ${dest} — ${country}`;
+    document.getElementById('transfer-form').style.display = 'none';
+    document.getElementById('confirm').classList.add('show');
+    const totalEl = document.getElementById('bal-total');
+    const current = parseInt(totalEl.textContent.replace(/[^\d]/g,''))||0;
+    totalEl.textContent = fmt(current - amt);
+    txData.unshift({name:'Transfert envoyé', sub:`Vers ${dest} — ${country}`, amt:`− ${fmt(amt)}`, ic:'↗', up:false});
+    renderTx();
+  });
+  document.getElementById('confirm-again').addEventListener('click', ()=>{
+    document.getElementById('transfer-form').style.display = 'block';
+    document.getElementById('confirm').classList.remove('show');
+  });
+
+  const loanSlider = document.getElementById('loan-slider');
+  const durSlider = document.getElementById('loan-duration');
+  function updateLoan(){
+    const amt = parseInt(loanSlider.value);
+    const dur = parseInt(durSlider.value);
+    const rate = 0.079;
+    const monthlyRate = rate/12;
+    const monthly = amt * monthlyRate / (1-Math.pow(1+monthlyRate,-dur));
+    const total = monthly*dur;
+    document.getElementById('loan-amt').textContent = fmt(amt);
+    document.getElementById('loan-amt-label').textContent = amt.toLocaleString('fr-FR');
+    document.getElementById('loan-dur-label').textContent = dur;
+    document.getElementById('loan-month').textContent = fmt(monthly);
+    document.getElementById('loan-total').textContent = fmt(total);
+  }
+  loanSlider.addEventListener('input', updateLoan);
+  durSlider.addEventListener('input', updateLoan);
+  updateLoan();
+</script>
+</body>
+</html>

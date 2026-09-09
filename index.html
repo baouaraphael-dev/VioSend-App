@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VioSend — L'argent qui voyage aussi vite que vous</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  .hero{
+    position: relative;
+    padding: 9vh 6vw 10vh;
+    min-height: 560px;
+    display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 40px;
+    align-items: center;
+  }
+  .hero-copy{ position: relative; z-index: 1; }
+  .eyebrow-free{ color: var(--text-muted); font-size: 1rem; margin-bottom: 18px; }
+  .hero h1{
+    font-family: 'Sora', sans-serif; font-weight: 700; letter-spacing: -0.02em;
+    font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1.04; max-width: 12ch;
+  }
+  .hero h1 .grad{
+    background: linear-gradient(90deg, var(--violet), var(--pink) 60%, var(--orange));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p{ margin-top: 22px; color: var(--text-muted); font-size: 1.08rem; max-width: 46ch; }
+  .hero-actions{ margin-top: 34px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary{
+    padding: 15px 28px; border-radius: 100px; border: none; cursor: pointer; font-family: inherit;
+    background: linear-gradient(90deg, var(--violet), var(--pink));
+    color: white; font-weight: 600; font-size: 0.98rem;
+    transition: transform .2s ease, box-shadow .2s ease; text-decoration:none; display:inline-block;
+  }
+  .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 14px 30px -10px rgba(139,92,246,0.55); }
+  .btn-ghost{
+    padding: 15px 24px; border-radius: 100px; border: 1px solid var(--line); background:transparent; cursor:pointer; font-family: inherit;
+    color: #fff; font-weight: 600; font-size: 0.98rem; text-decoration:none; display:inline-block;
+  }
+  .btn-ghost:hover{ background: rgba(255,255,255,0.05); }
+  .hero-stats{ display: flex; gap: 34px; margin-top: 52px; }
+  .hero-stats div{ font-family: 'Sora', sans-serif; font-size: 1.5rem; font-weight: 700; }
+  .hero-stats span{ display: block; font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--text-muted); font-weight: 400; margin-top: 3px; }
+
+  .hero-visual{ position: relative; height: 480px; z-index: 1; }
+  .float-card{
+    position: absolute; width: 320px; padding: 24px;
+    background: linear-gradient(160deg, #17101f, #0f0b1a);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 24px;
+    box-shadow: 0 40px 80px -30px rgba(0,0,0,0.7);
+  }
+  .card-main{ top: 30px; right: 10px; transform: rotate(3deg); z-index: 2; }
+  .card-behind{ top: 110px; right: 60px; transform: rotate(-6deg); opacity: 0.5; z-index: 1; }
+  .card-top{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .card-top .chip{ width: 40px; height: 40px; border-radius: 8px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.06); }
+  .card-top .chip img{ width: 100%; height: 100%; object-fit: contain; }
+  .card-label{ color: var(--text-muted); font-size: 0.8rem; }
+  .card-balance{ font-family: 'Sora', sans-serif; font-size: 1.9rem; font-weight: 700; margin-top: 6px; }
+  .card-foot{ display: flex; justify-content: space-between; margin-top: 22px; font-size: 0.8rem; color: var(--text-muted); }
+  .spark{ margin-top: 16px; height: 34px; }
+
+  .features{ position: relative; padding: 14vh 6vw; background: #000; }
+  .features-head{ max-width: 640px; margin-bottom: 60px; }
+  .features-head h2{ font-size: clamp(1.9rem, 3vw, 2.6rem); }
+  .features-head p{ color: var(--text-muted); margin-top: 14px; font-size: 1.05rem; }
+  .feat-grid{ display: grid; grid-template-columns: 1.3fr 1fr 1fr; grid-template-rows: auto auto; gap: 20px; }
+  .feat{
+    border: 1px solid var(--line); border-radius: 18px; padding: 30px;
+    background: #0d0d10; transition: border-color .2s ease;
+  }
+  .feat:hover{ border-color: rgba(255,255,255,0.2); }
+  .feat.big{ grid-row: span 2; padding: 36px; }
+  .feat-num{ color: var(--text-muted); font-size: 0.85rem; font-family: 'Sora', sans-serif; }
+  .feat h3{ font-size: 1.2rem; margin-top: 14px; }
+  .feat p{ color: var(--text-muted); margin-top: 10px; font-size: 0.95rem; }
+  .feat-mark{ width: 42px; height: 42px; border-radius: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+  .mark-1{ background: rgba(139,92,246,0.16); }
+  .mark-2{ background: rgba(236,72,153,0.16); }
+  .mark-3{ background: rgba(251,146,60,0.16); }
+
+  footer{ background:#000; padding: 40px 6vw; border-top: 1px solid var(--line); display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.85rem; flex-wrap: wrap; gap: 14px; }
+
+  @media(max-width:900px){
+    .hero{ grid-template-columns: 1fr; }
+    .hero-visual{ height: 340px; }
+    .feat-grid{ grid-template-columns: 1fr; }
+    .feat.big{ grid-row: auto; }
+    .hero-stats{ flex-wrap: wrap; gap: 22px; }
+  }
+  @media(max-width:520px){
+    .hero{ padding: 6vh 6vw 6vh; }
+    .hero-visual{ height: 260px; }
+    .float-card{ width: 88%; padding: 18px; }
+    .card-main{ right: 0; top: 10px; }
+    .card-behind{ display: none; }
+    .hero-actions{ flex-direction: column; align-items: stretch; }
+    .hero-actions a{ text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="spline-bg">
+  <spline-viewer url="https://prod.spline.design/lBtAFIOp01PPBggx/scene.splinecode"></spline-viewer>
+</div>
+
+<header>
+    <div class="logo-container">
+        <img src="mon.png" alt="VioSend">
+    </div>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <div class="header-right" id="header-right">
+        <nav class="nav-center">
+            <button class="nav-btn" onclick="location.href='produits.html'">Produits</button>
+            <button class="nav-btn" onclick="location.href='communaute.html'">Communauté</button>
+            <button class="nav-btn" onclick="location.href='aide.html'">Aide</button>
+            <button class="nav-btn" onclick="location.href='dashboard.html'">Notre Dashboard</button>
+        </nav>
+        <a href="connexion.html" class="connexion-link">Connexion</a>
+        <a class="download-btn" href="VioSend-Presentation.pdf" download>Télécharger</a>
+    </div>
+</header>
+
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow-free">Transferts internationaux, prêts, intelligence artificielle</div>
+    <h1>L'argent qui voyage <span class="grad">aussi vite</span> que vous</h1>
+    <p>VioSend connecte des comptes, des cartes et des lignes mobiles partout dans le monde pour envoyer de l'argent et accéder à des prêts en quelques secondes, avec une IA qui optimise chaque transfert.</p>
+    <div class="hero-actions">
+      <a href="inscription.html" class="btn-primary">Créer un compte</a>
+      <a href="dashboard.html" class="btn-ghost">Voir la démo du dashboard</a>
+    </div>
+    <div class="hero-stats">
+      <div>190+<span>pays couverts</span></div>
+      <div>&lt;30s<span>par transfert</span></div>
+      <div>24/7<span>disponibilité</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="float-card card-behind"></div>
+    <div class="float-card card-main">
+      <div class="card-top">
+        <span class="card-label">Solde principal</span>
+        <span class="chip"><img src="logo.png" alt="VioSend"></span>
+      </div>
+      <div class="card-balance">1 284 500 F</div>
+      <svg class="spark" viewBox="0 0 300 40" preserveAspectRatio="none">
+        <polyline points="0,30 30,26 60,28 90,18 120,20 150,10 180,14 210,6 240,9 270,4 300,8" fill="none" stroke="url(#g1)" stroke-width="2.5"/>
+        <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="60%" stop-color="#EC4899"/><stop offset="100%" stop-color="#FB923C"/></linearGradient></defs>
+      </svg>
+      <div class="card-foot"><span>VioSend •• 4471</span><span>Expire 09/29</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="produit">
+  <div class="features-head">
+    <h2>Trois idées simples derrière VioSend</h2>
+    <p>Une plateforme pensée pour que l'argent circule sans friction, entre les personnes et entre les pays.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat big">
+      <div class="feat-mark mark-1">↗</div>
+      <div class="feat-num">Envoyer</div>
+      <h3>Un transfert, n'importe où, en quelques secondes</h3>
+      <p>Que le destinataire ait une carte bancaire ou simplement une carte SIM, VioSend trouve le chemin le plus rapide pour faire arriver l'argent — sans passer par un guichet.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-mark mark-2">%</div>
+      <div class="feat-num">Emprunter</div>
+      <h3>Des prêts évalués en direct</h3>
+      <p>Un score de crédit calculé par l'IA à partir de l'activité du compte, pour proposer un montant et un taux adaptés en quelques minutes.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-mark mark-3">✦</div>
+      <div class="feat-num">Optimiser</div>
+      <h3>Une IA qui surveille chaque transfert</h3>
+      <p>Détection de fraude, choix automatique du taux de change le plus favorable, alertes en cas d'anomalie sur le compte.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 VioSend — simulation de démonstration.</div>
+  <div>Fait pour aller vite, partout.</div>
+</footer>
+
+<script type="module" src="https://cdn.spline.design/@splinetool/viewer@2.0.36/build/spline-viewer.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
